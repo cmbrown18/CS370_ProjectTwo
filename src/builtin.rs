@@ -97,6 +97,7 @@ fn list_files_builtin(args: &[String]) -> Result<(), Error> {
 ///
 /// * `args` - A vector of strings corresponding to the command and its arguments.
 fn file_remove_builtin(args: &[String]) -> Result<(), Error> {
+<<<<<<< HEAD
     // TODO: Write code here that will remove the specified list of files.  If no file list is specified, print a
     // usage message.
     if (args[1] == "-r") {
@@ -104,6 +105,13 @@ fn file_remove_builtin(args: &[String]) -> Result<(), Error> {
     } else if (!args.is_empty()) {
         println!("{:?}", args);
         for i in 1..args.len() {
+=======
+     // TODO: Write code here that will remove the specified list of files.  If no file list is specified, print a
+     // usage message.
+    
+    if !args.is_empty() {
+        for i in 1..args.len(){
+>>>>>>> a99b6b99aa8e112e5760f9d5bcf4fc5a28bafe29
             std::fs::remove_file(&args[i]);
         }
     } else {
@@ -138,7 +146,11 @@ fn change_dir_builtin(args: &[String]) -> Result<(), Error> {
 
     //which arg would we pass in??
     //maybe call our pwd to test it and also test this function as well -- two birds one stone
-    std::env::set_current_dir(&args[1]);
+    if Path::new(&args[1]).is_dir() {
+        std::env::set_current_dir(&args[1]);
+    }else{
+        println!("cd: {}: no such file or directory", &args[1]);
+    }
     Ok(())
 }
 
