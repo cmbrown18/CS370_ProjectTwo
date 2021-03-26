@@ -1,18 +1,17 @@
 /// TODO: HELP all files, classes, functions, method need commenting
 /// Agora is using Rust, version 1.45.0
-
 pub mod builtin;
 pub mod history;
 pub mod parser;
 pub mod redirect;
 pub mod utils;
-use std::cell::RefCell;
-use ctrlc::set_handler;
-use nix::sys::signal::{kill, SIGTERM};
-use nix::unistd::Pid;
 use crate::builtin::builtin;
 use crate::history::History;
 use crate::utils::{execute, parse_line, prompt_and_read};
+use ctrlc::set_handler;
+use nix::sys::signal::{kill, SIGTERM};
+use nix::unistd::Pid;
+use std::cell::RefCell;
 
 ///
 /// main.rs
@@ -46,10 +45,7 @@ use crate::utils::{execute, parse_line, prompt_and_read};
 //TODO: create Global variable if needed
 
 fn main() {
-
-
-     // TODO:  Define a signal handler function below as needed
-
+    // TODO:  Define a signal handler function below as needed
 
     loop {
         let tokens = prompt_and_read().unwrap_or(Vec::new()); // entire line
@@ -58,7 +54,7 @@ fn main() {
         let mut history = History::new();
 
         // Check if user want to run a builtin or not
-        if let Ok(false) = builtin(&tokens, &mut history) { 
+        if let Ok(false) = builtin(&tokens, &mut history) {
             if let Ok(Some(mut child)) = parse_line(&tokens, None) {
                 if let Err(e) = execute(&mut child) {
                     eprintln!("Error: Could not execute process.\n{}", e);

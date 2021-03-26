@@ -3,9 +3,10 @@ use crate::history::History;
 // use std::env::{Crates Needed};
 // TODO: include crates you need from std::fs
 // use std::fs::{Crates Needed};
-use std::io::Error;
+use std::{io::Error, ptr::NonNull};
 use std::path::PathBuf;
 use std::process::exit;
+use std::fs;
 
 /// Handles builtins
 ///
@@ -86,6 +87,18 @@ fn list_files_builtin(args: &[String]) -> Result<(), Error> {
 fn file_remove_builtin(args: &[String]) -> Result<(), Error> {
      // TODO: Write code here that will remove the specified list of files.  If no file list is specified, print a
      // usage message.
+    
+    if(!args.is_empty()){
+        i = 1;
+        while( i < args.len() ){
+            fs::remove_file(args[i])?;
+            i++;
+        }
+    }
+    else{
+        print!("rm <list of files>")
+    }
+
     Ok(())
 }
 

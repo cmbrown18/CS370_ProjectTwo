@@ -1,16 +1,15 @@
-builtin.rs      // Builtins (rm, ls, cd)
+builtin.rs // Builtins (rm, ls, cd)
 
-grammar.pest    // Grammar for parsing
+grammar.pest // Grammar for parsing
 
-history.rs      // Command history
+history.rs // Command history
 
-main.rs         // Main shell
+main.rs // Main shell
 
-parser.rs       // Parses input
+parser.rs // Parses input
 
-README.md       // Self
+README.md // Self
 
-redirect.rs     // Handles redirection
+redirect.rs // Handles redirection
 
-utils.rs        // Misc functions
-
+utils.rs // Misc functions
