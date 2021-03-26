@@ -3,10 +3,10 @@ use crate::history::History;
 // use std::env::{Crates Needed};
 // TODO: include crates you need from std::fs
 // use std::fs::{Crates Needed};
-use std::{io::Error, ptr::NonNull};
-use std::path::{PathBuf, Path};
-use std::process::exit;
 use std::fs;
+use std::path::{Path, PathBuf};
+use std::process::exit;
+use std::{io::Error, ptr::NonNull};
 
 /// Handles builtins
 ///
@@ -19,7 +19,6 @@ use std::fs;
 ///
 /// True if the command was a builtin, else false.
 pub fn builtin(commands: &[String], mut history: &mut History) -> Result<bool, Error> {
-
     match &commands.first().unwrap_or(&String::new())[..] {
         "ls" => {
             if let Err(e) = list_files_builtin(commands) {
@@ -73,7 +72,6 @@ pub fn builtin(commands: &[String], mut history: &mut History) -> Result<bool, E
 ///
 /// * `args` - A vector of strings corresponding to the command and its arguments.
 fn list_files_builtin(args: &[String]) -> Result<(), Error> {
- 
     // TODO: Write code here that will list the content of the specified directory (or if no directory was specified,
     // the current directory).
 
@@ -83,10 +81,9 @@ fn list_files_builtin(args: &[String]) -> Result<(), Error> {
         for entry in fs::read_dir(".")? {
             println!("\"{}\"", entry.unwrap().path().display());
         }
-
-    }else {
+    } else {
         //if it is 2
-        for entry in fs::read_dir(&args[1])?{
+        for entry in fs::read_dir(&args[1])? {
             println!("\"{}\"", entry.unwrap().path().display());
         }
     }
@@ -100,16 +97,16 @@ fn list_files_builtin(args: &[String]) -> Result<(), Error> {
 ///
 /// * `args` - A vector of strings corresponding to the command and its arguments.
 fn file_remove_builtin(args: &[String]) -> Result<(), Error> {
-     // TODO: Write code here that will remove the specified list of files.  If no file list is specified, print a
-     // usage message.
-    
-    if !args.is_empty() {
+    // TODO: Write code here that will remove the specified list of files.  If no file list is specified, print a
+    // usage message.
+    if (args[1] == "-r") {
+        fs::remove_dir_all(&args[2]);
+    } else if (!args.is_empty()) {
         println!("{:?}", args);
-        for i in 1..args.len(){
+        for i in 1..args.len() {
             std::fs::remove_file(&args[i]);
         }
-    }
-    else{
+    } else {
         print!("rm <list of files>")
     }
     Ok(())
@@ -137,7 +134,7 @@ fn touch_builtin(args: &[String]) -> Result<(), Error> {
 ///
 /// * `args` - A vector of strings corresponding to the command and its arguments.
 fn change_dir_builtin(args: &[String]) -> Result<(), Error> {
-     // TODO: Write code here that will change to a specified directory.
+    // TODO: Write code here that will change to a specified directory.
 
     //which arg would we pass in??
     //maybe call our pwd to test it and also test this function as well -- two birds one stone
@@ -150,7 +147,6 @@ fn pwd_builtin() {
     let current_directory = std::env::current_dir().unwrap();
     println!("{:?}", fs::canonicalize(&current_directory).unwrap());
 }
-
 
 /// Implements a built-in command history
 ///
