@@ -97,21 +97,13 @@ fn list_files_builtin(args: &[String]) -> Result<(), Error> {
 ///
 /// * `args` - A vector of strings corresponding to the command and its arguments.
 fn file_remove_builtin(args: &[String]) -> Result<(), Error> {
-<<<<<<< HEAD
     // TODO: Write code here that will remove the specified list of files.  If no file list is specified, print a
     // usage message.
-    if (args[1] == "-r") {
+    if args[1] == "-r" {
         fs::remove_dir_all(&args[2]);
-    } else if (!args.is_empty()) {
+    } else if !args.is_empty() {
         println!("{:?}", args);
         for i in 1..args.len() {
-=======
-     // TODO: Write code here that will remove the specified list of files.  If no file list is specified, print a
-     // usage message.
-    
-    if !args.is_empty() {
-        for i in 1..args.len(){
->>>>>>> a99b6b99aa8e112e5760f9d5bcf4fc5a28bafe29
             std::fs::remove_file(&args[i]);
         }
     } else {
