@@ -90,7 +90,7 @@ fn list_files_builtin(args: &[String]) -> Result<(), Error> {
         }
     }else {
         //if it is 2
-        for entry in fs::read_dir(&args[1]){
+        for entry in fs::read_dir(&args[1])?{
             println!("{}", entry.unwrap().path().display());
         }
     }
@@ -127,9 +127,9 @@ fn touch_builtin(args: &[String]) -> Result<(), Error> {
     // TODO: Write code here that will create a file or update a timestamp of a file.
     //../here  ./here
     if !args.is_empty() {
-        let current_directory = std::env::current_dir().unwrap();
-        let path = Path::from(*current_directory);
-        let temp = path.exists();
+        let mut current_directory = std::env::current_dir();
+        let mut other = std::env::current_dir().unwrap();
+        other.push(&args[1]);
     }
     Ok(())
 }
@@ -151,7 +151,7 @@ fn change_dir_builtin(args: &[String]) -> Result<(), Error> {
 /// Implements a built-in version of the 'pwd' command.
 fn pwd_builtin() {
     let current_directory = std::env::current_dir().unwrap();
-    println!("{:?}", fs::canonicalize(&current_directory));
+    println!("{:?}", fs::canonicalize(&current_directory).unwrap());
 }
 
 
