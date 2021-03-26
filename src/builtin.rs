@@ -4,7 +4,7 @@ use crate::history::History;
 // TODO: include crates you need from std::fs
 // use std::fs::{Crates Needed};
 use std::{io::Error, ptr::NonNull};
-use std::path::PathBuf;
+use std::path::{PathBuf, Path};
 use std::process::exit;
 use std::fs;
 
@@ -76,6 +76,25 @@ fn list_files_builtin(args: &[String]) -> Result<(), Error> {
  
     // TODO: Write code here that will list the content of the specified directory (or if no directory was specified,
     // the current directory).
+
+    //if the command is literally 'ls'
+    if args.len() == 1 {
+        //get current directory
+        let current_directory = std::env::current_dir().unwrap();
+
+        //next few lines are from internet, if statement below is probably useless
+        if current_directory.is_dir() {
+            for entry in fs::read_dir(current_directory)? {
+                println!("{}", entry.unwrap().path().display());
+            }
+        }
+    }else {
+        //if it is 2
+        for entry in fs::read_dir(&args[1]){
+            println!("{}", entry.unwrap().path().display());
+        }
+    }
+
     Ok(())
 }
 
@@ -88,17 +107,14 @@ fn file_remove_builtin(args: &[String]) -> Result<(), Error> {
      // TODO: Write code here that will remove the specified list of files.  If no file list is specified, print a
      // usage message.
     
-    if(!args.is_empty()){
-        i = 1;
-        while( i < args.len() ){
-            fs::remove_file(args[i])?;
-            i++;
+    if !args.is_empty() {
+        for file in args.iter() {
+            fs::remove_file(file)?;
         }
     }
     else{
         print!("rm <list of files>")
     }
-
     Ok(())
 }
 
@@ -108,7 +124,13 @@ fn file_remove_builtin(args: &[String]) -> Result<(), Error> {
 ///
 /// * `args` - A vector of strings corresponding to the command and its arguments.
 fn touch_builtin(args: &[String]) -> Result<(), Error> {
-     // TODO: Write code here that will create a file or update a timestamp of a file.
+    // TODO: Write code here that will create a file or update a timestamp of a file.
+    //../here  ./here
+    if !args.is_empty() {
+        let current_directory = std::env::current_dir().unwrap();
+        let path = Path::from(*current_directory);
+        let temp = path.exists();
+    }
     Ok(())
 }
 
@@ -119,12 +141,17 @@ fn touch_builtin(args: &[String]) -> Result<(), Error> {
 /// * `args` - A vector of strings corresponding to the command and its arguments.
 fn change_dir_builtin(args: &[String]) -> Result<(), Error> {
      // TODO: Write code here that will change to a specified directory.
+
+    //which arg would we pass in??
+    //maybe call our pwd to test it and also test this function as well -- two birds one stone
+    std::env::set_current_dir(&args[1]);
     Ok(())
 }
 
 /// Implements a built-in version of the 'pwd' command.
 fn pwd_builtin() {
-     // TODO: Write code here that will print the current working directory.
+    let current_directory = std::env::current_dir().unwrap();
+    println!("{:?}", fs::canonicalize(&current_directory));
 }
 
 
