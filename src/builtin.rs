@@ -99,12 +99,25 @@ fn list_files_builtin(args: &[String]) -> Result<(), Error> {
 fn file_remove_builtin(args: &[String]) -> Result<(), Error> {
     // TODO: Write code here that will remove the specified list of files.  If no file list is specified, print a
     // usage message.
-    if args[1] == "-r" {
-        fs::remove_dir_all(&args[2]);
-    } else if !args.is_empty() {
-        println!("{:?}", args);
-        for i in 1..args.len() {
-            std::fs::remove_file(&args[i]);
+    if !args.is_empty() {
+        if args[1] == "-r"{
+            if args.len() != 3 {
+                println!("rm: missing operand")
+            }else {
+                if Path::new(&args[2]).is_dir(){
+                    fs::remove_dir_all(&args[2]);
+                }else{
+                    println!("rm: cannot remove '{}': No such file or directory", args[2]);
+                }
+            }
+        }else if args[1] != "-r" {
+            if Path::new(&args[1]).exists(){
+                for i in 1..args.len() {
+                    std::fs::remove_file(&args[i]);
+                }
+            }else{
+                println!("rm: cannot remove '{}': No such file or directory", args[1]);
+            }
         }
     } else {
         print!("rm <list of files>")
