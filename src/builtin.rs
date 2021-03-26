@@ -79,19 +79,15 @@ fn list_files_builtin(args: &[String]) -> Result<(), Error> {
 
     //if the command is literally 'ls'
     if args.len() == 1 {
-        //get current directory
-        let current_directory = std::env::current_dir().unwrap();
-
         //next few lines are from internet, if statement below is probably useless
-        if current_directory.is_dir() {
-            for entry in fs::read_dir(current_directory)? {
-                println!("{}", entry.unwrap().path().display());
-            }
+        for entry in fs::read_dir(".")? {
+            println!("\"{}\"", entry.unwrap().path().display());
         }
+
     }else {
         //if it is 2
         for entry in fs::read_dir(&args[1])?{
-            println!("{}", entry.unwrap().path().display());
+            println!("\"{}\"", entry.unwrap().path().display());
         }
     }
 
@@ -108,8 +104,9 @@ fn file_remove_builtin(args: &[String]) -> Result<(), Error> {
      // usage message.
     
     if !args.is_empty() {
-        for file in args.iter() {
-            fs::remove_file(file)?;
+        println!("{:?}", args);
+        for i in 1..args.len(){
+            std::fs::remove_file(&args[i]);
         }
     }
     else{
