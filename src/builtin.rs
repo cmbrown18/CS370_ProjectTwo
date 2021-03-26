@@ -104,7 +104,6 @@ fn file_remove_builtin(args: &[String]) -> Result<(), Error> {
      // usage message.
     
     if !args.is_empty() {
-        println!("{:?}", args);
         for i in 1..args.len(){
             std::fs::remove_file(&args[i]);
         }
@@ -141,7 +140,11 @@ fn change_dir_builtin(args: &[String]) -> Result<(), Error> {
 
     //which arg would we pass in??
     //maybe call our pwd to test it and also test this function as well -- two birds one stone
-    std::env::set_current_dir(&args[1]);
+    if Path::new(&args[1]).is_dir() {
+        std::env::set_current_dir(&args[1]);
+    }else{
+        println!("cd: {}: no such file or directory", &args[1]);
+    }
     Ok(())
 }
 
