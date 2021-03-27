@@ -4,6 +4,7 @@ use crate::history::History;
 // TODO: include crates you need from std::fs
 // use std::fs::{Crates Needed};
 use std::fs;
+use std::fs::OpenOptions;
 use std::path::{Path, PathBuf};
 use std::process::exit;
 use std::{io::Error, ptr::NonNull};
@@ -100,22 +101,22 @@ fn file_remove_builtin(args: &[String]) -> Result<(), Error> {
     // TODO: Write code here that will remove the specified list of files.  If no file list is specified, print a
     // usage message.
     if !args.is_empty() {
-        if args[1] == "-r"{
+        if args[1] == "-r" {
             if args.len() != 3 {
                 println!("rm: missing operand")
-            }else {
-                if Path::new(&args[2]).is_dir(){
+            } else {
+                if Path::new(&args[2]).is_dir() {
                     fs::remove_dir_all(&args[2]);
-                }else{
+                } else {
                     println!("rm: cannot remove '{}': No such file or directory", args[2]);
                 }
             }
-        }else if args[1] != "-r" {
-            if Path::new(&args[1]).exists(){
+        } else if args[1] != "-r" {
+            if Path::new(&args[1]).exists() {
                 for i in 1..args.len() {
                     std::fs::remove_file(&args[i]);
                 }
-            }else{
+            } else {
                 println!("rm: cannot remove '{}': No such file or directory", args[1]);
             }
         }
@@ -134,9 +135,23 @@ fn touch_builtin(args: &[String]) -> Result<(), Error> {
     // TODO: Write code here that will create a file or update a timestamp of a file.
     //../here  ./here
     if !args.is_empty() {
-        let mut current_directory = std::env::current_dir();
-        let mut other = std::env::current_dir().unwrap();
-        other.push(&args[1]);
+        for i in 1..args.len() {
+            if Path::new(&args[1]).exists() {
+                let meta = fs::metadata(&args[1]);
+                println!("{:?}", meta.unwrap().file_type());
+                let mut touch = OpenOptions::new()
+                    .create(true)
+                    .write(true)
+                    .read(true)
+                    .open(&args[i]);
+            } else {
+                let touch = OpenOptions::new()
+                    .create(true)
+                    .write(true)
+                    .read(true)
+                    .open(&args[i]);
+            }
+        }
     }
     Ok(())
 }
@@ -153,7 +168,7 @@ fn change_dir_builtin(args: &[String]) -> Result<(), Error> {
     //maybe call our pwd to test it and also test this function as well -- two birds one stone
     if Path::new(&args[1]).is_dir() {
         std::env::set_current_dir(&args[1]);
-    }else{
+    } else {
         println!("cd: {}: no such file or directory", &args[1]);
     }
     Ok(())
