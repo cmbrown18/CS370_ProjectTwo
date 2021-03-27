@@ -110,21 +110,19 @@ fn file_remove_builtin(args: &[String]) -> Result<(), Error> {
                     println!("rm: cannot remove '{}': No such file or directory", args[2]);
                 }
             }
-        }
-    } else if args[1] != "-r" {
-        for i in 1..args.len() {
-            if Path::new(&args[i]).is_dir() {
-                println!(
-                    "'{}' is a directory, cannot delete without -r tag",
-                    &args[i]
-                )
-            } else if Path::new(&args[i]).exists() {
-                std::fs::remove_file(&args[i]);
-            } else {
-                println!("rm: cannot remove '{}': No such file or directory", args[1]);
+        } else if args[1] != "-r" {
+            for i in 1..args.len() {
+                let path = Path::new(&args[i]);
+                if path.is_dir() {
+                    println!("'{}' is a directory, cannot delete without -r tag", &args[i]);
+                } else if path.exists() {
+                    std::fs::remove_file(&args[i]);
+                } else {
+                    println!("rm: cannot remove '{}': No such file or directory", args[1]);
+                }
             }
         }
-    } else {
+    }else {
         print!("rm <list of files>")
     }
     Ok(())
@@ -137,11 +135,10 @@ fn file_remove_builtin(args: &[String]) -> Result<(), Error> {
 /// * `args` - A vector of strings corresponding to the command and its arguments.
 fn touch_builtin(args: &[String]) -> Result<(), Error> {
     // TODO: Write code here that will create a file or update a timestamp of a file.
-    //../here  ./here
     if !args.is_empty() {
         for i in 1..args.len() {
-            if Path::new(&args[1]).exists() {
-                let meta = fs::metadata(&args[1]);
+            if Path::new(&args[i]).exists() {
+                let meta = fs::metadata(&args[i]);
                 println!("{:?}", meta.unwrap().file_type());
                 let mut touch = OpenOptions::new()
                     .create(true)
