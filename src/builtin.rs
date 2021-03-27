@@ -88,7 +88,6 @@ fn list_files_builtin(args: &[String]) -> Result<(), Error> {
             println!("\"{}\"", entry.unwrap().path().display());
         }
     }
-
     Ok(())
 }
 
@@ -111,11 +110,16 @@ fn file_remove_builtin(args: &[String]) -> Result<(), Error> {
                     println!("rm: cannot remove '{}': No such file or directory", args[2]);
                 }
             }
-        } else if args[1] != "-r" {
-            if Path::new(&args[1]).exists() {
-                for i in 1..args.len() {
-                    std::fs::remove_file(&args[i]);
-                }
+        }
+    } else if args[1] != "-r" {
+        for i in 1..args.len() {
+            if Path::new(&args[i]).is_dir() {
+                println!(
+                    "'{}' is a directory, cannot delete without -r tag",
+                    &args[i]
+                )
+            } else if Path::new(&args[i]).exists() {
+                std::fs::remove_file(&args[i]);
             } else {
                 println!("rm: cannot remove '{}': No such file or directory", args[1]);
             }
