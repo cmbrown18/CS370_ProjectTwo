@@ -1,7 +1,6 @@
 extern crate pest;
 
 /// No comments on purpose
-
 use pest::Parser;
 use pest_derive::Parser;
 
@@ -19,12 +18,9 @@ pub fn parse(to_parse: String) -> Vec<String> {
     let mut tokens: Vec<String> = vec![];
 
     // Gets `line`
-    
     for line in parsed.into_inner() {
-    
-    // `line` is either `quoted` or `commands`
+        // `line` is either `quoted` or `commands`
         match line.as_rule() {
-
             Rule::quoted => {
                 // Trim the quotation marks off of the string
                 let token = line.as_str();

@@ -13,7 +13,11 @@ use std::process::{Command, Stdio};
 /// # Return value
 ///
 /// A `Result` with an `Option` containing a ready-to-execute `Command`
-pub fn redirect( redirector: &str, command: &[String], process: Option<Command>,) -> Result<Option<Command>, Error> {
+pub fn redirect(
+    redirector: &str,
+    command: &[String],
+    process: Option<Command>,
+) -> Result<Option<Command>, Error> {
     match redirector {
         // ---- Append redirection ----
         ">>" => handle_append_redirect(command, process),
@@ -33,7 +37,7 @@ pub fn redirect( redirector: &str, command: &[String], process: Option<Command>,
         "|" => handle_pipe(command, process),
         _ => {
             // TODO
-            // This is not a redication operator but a command we want to execute, so set up a ready-to-execute 
+            // This is not a redication operator but a command we want to execute, so set up a ready-to-execute
             // Command with any command line arguments it should have and return it.
             // Replace this error with correct code
             return Err(Error::new(ErrorKind::Other, "Redirect not finished"));
@@ -52,13 +56,15 @@ pub fn redirect( redirector: &str, command: &[String], process: Option<Command>,
 /// # Return Value
 ///
 /// A `Result` with an `Option` containing a ready-to-execute `Command`
-fn handle_append_redirect( tokens: &[String], process: Option<Command>,) -> Result<Option<Command>, Error> {
+fn handle_append_redirect(
+    tokens: &[String],
+    process: Option<Command>,
+) -> Result<Option<Command>, Error> {
     //TODO
-    // Write code here to cause the standard output of this ready-to-run command 
+    // Write code here to cause the standard output of this ready-to-run command
     // to be sent to a file with the specified name. If the file already exists, its
     // contents should be appended when this (soon-to-be process) writes to the file.
     Err(Error::new(ErrorKind::Other, "append redirect not finished"))
-
 }
 
 /// Redirects standard error from this ready-to-execute Command to the file with the specified name.
@@ -71,10 +77,12 @@ fn handle_append_redirect( tokens: &[String], process: Option<Command>,) -> Resu
 /// # Return Value
 ///
 /// A `Result` with an `Option` containing a ready-to-execute `Command`
-fn handle_stderr_redirect( tokens: &[String], process: Option<Command>,) -> Result<Option<Command>, Error> {
-
+fn handle_stderr_redirect(
+    tokens: &[String],
+    process: Option<Command>,
+) -> Result<Option<Command>, Error> {
     //TODO
-    // Write code here to cause the standard error of this ready-to-run command 
+    // Write code here to cause the standard error of this ready-to-run command
     // to be sent to a file with the specified name. If the file already exists, its
     // contents should be truncated before this (soon-to-be process) writes to the file.
     Err(Error::new(ErrorKind::Other, "stderr redirect not finished"))
@@ -90,13 +98,18 @@ fn handle_stderr_redirect( tokens: &[String], process: Option<Command>,) -> Resu
 /// # Return Value
 ///
 /// A `Result` with an `Option` containing a ready-to-execute `Command`
-fn handle_stdout_stderr_redirect(tokens: &[String], process: Option<Command>,) -> Result<Option<Command>, Error> {
-
+fn handle_stdout_stderr_redirect(
+    tokens: &[String],
+    process: Option<Command>,
+) -> Result<Option<Command>, Error> {
     //TODO
-    // Write code here to cause the standard output and standard error of this ready-to-run command 
+    // Write code here to cause the standard output and standard error of this ready-to-run command
     // to be sent to a file with the specified name. If the file already exists, its
     // contents should be truncated before this (soon-to-be process) writes to the file.
-    Err(Error::new(ErrorKind::Other, "stdout_stderr redirect not finished"))
+    Err(Error::new(
+        ErrorKind::Other,
+        "stdout_stderr redirect not finished",
+    ))
 }
 
 /// Redirects standard output from this ready-to-execute Command to a file with the specified name.
@@ -109,14 +122,16 @@ fn handle_stdout_stderr_redirect(tokens: &[String], process: Option<Command>,) -
 /// # Return Value
 ///
 /// A `Result` with an `Option` containing a ready-to-execute `Command`
-fn handle_stdout_redirect( tokens: &[String], process: Option<Command>,) -> Result<Option<Command>, Error> {
-
+fn handle_stdout_redirect(
+    tokens: &[String],
+    process: Option<Command>,
+) -> Result<Option<Command>, Error> {
     //TODO
-    // Write code here to cause the standard output of this ready-to-run command 
+    // Write code here to cause the standard output of this ready-to-run command
     // to be sent to a file with the specified name. If the file already exists, its
     // contents should be truncated before this (soon-to-be process) writes to the file.
-    Err(Error::new(ErrorKind::Other, "stdout redirect not finished"))
 
+    Err(Error::new(ErrorKind::Other, "stdout redirect not finished"))
 }
 
 /// Redirects standard input to this ready-to-execute Command from the file with the specified name.
@@ -129,10 +144,12 @@ fn handle_stdout_redirect( tokens: &[String], process: Option<Command>,) -> Resu
 /// # Return Value
 ///
 /// A `Result` with an `Option` containing a ready-to-execute `Command`
-fn handle_stdin_redirect(tokens: &[String], process: Option<Command>,) -> Result<Option<Command>, Error> {
-
+fn handle_stdin_redirect(
+    tokens: &[String],
+    process: Option<Command>,
+) -> Result<Option<Command>, Error> {
     //TODO
-    // Write code here to cause the standard input of this ready-to-run command 
+    // Write code here to cause the standard input of this ready-to-run command
     // to read from a file with the specified name
     Err(Error::new(ErrorKind::Other, "stdin redirect not finished"))
 }
@@ -149,15 +166,12 @@ fn handle_stdin_redirect(tokens: &[String], process: Option<Command>,) -> Result
 ///
 /// A `Result` with an `Option` containing a ready-to-execute `Command`
 fn handle_pipe(commands: &[String], process: Option<Command>) -> Result<Option<Command>, Error> {
-
     // TODO
     // We do not see a RHS process there is nothing to do
 
-
-
     //TODO
     // Write code here to handle a pipe between processes -- a unidirectional data stream
-    // that can be used for interprocess communication. 
+    // that can be used for interprocess communication.
 
     // Write code here to run and connect the left hand side process to a new ready-to-execute Command
     Err(Error::new(ErrorKind::Other, "pipe redirect not finished"))
