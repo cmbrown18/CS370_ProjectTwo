@@ -104,17 +104,24 @@ fn file_remove_builtin(args: &[String]) -> Result<(), Error> {
             if args.len() != 3 {
                 println!("rm: missing operand")
             } else {
-                if Path::new(&args[2]).is_dir() {
-                    fs::remove_dir_all(&args[2]);
-                } else {
-                    println!("rm: cannot remove '{}': No such file or directory", args[2]);
+                for i in 2..args.len() {
+                    if Path::new(&args[i]).is_dir() {
+                        fs::remove_dir_all(&args[i]);
+                    } else if Path::new(&args[i]).exists() {
+                        fs::remove_file(&args[i]);
+                    } else {
+                        println!("rm: cannot remove '{}': No such file or directory", args[2]);
+                    }
                 }
             }
         } else if args[1] != "-r" {
             for i in 1..args.len() {
                 let path = Path::new(&args[i]);
                 if path.is_dir() {
-                    println!("'{}' is a directory, cannot delete without -r tag", &args[i]);
+                    println!(
+                        "'{}' is a directory, cannot delete without -r tag",
+                        &args[i]
+                    );
                 } else if path.exists() {
                     std::fs::remove_file(&args[i]);
                 } else {
@@ -122,7 +129,7 @@ fn file_remove_builtin(args: &[String]) -> Result<(), Error> {
                 }
             }
         }
-    }else {
+    } else {
         print!("rm <list of files>")
     }
     Ok(())
