@@ -3,8 +3,8 @@ use crate::history::History;
 // use std::env::{Crates Needed};
 // TODO: include crates you need from std::fs
 // use std::fs::{Crates Needed};
-use std::fs;
 use std::fs::OpenOptions;
+use std::fs::{self, File};
 use std::path::{Path, PathBuf};
 use std::process::exit;
 use std::{io::Error, ptr::NonNull};
@@ -145,19 +145,21 @@ fn touch_builtin(args: &[String]) -> Result<(), Error> {
     if !args.is_empty() {
         for i in 1..args.len() {
             if Path::new(&args[i]).exists() {
-                let meta = fs::metadata(&args[i]);
-                println!("{:?}", meta.unwrap().file_type());
-                let mut touch = OpenOptions::new()
-                    .create(true)
+                let filedata = fs::metadata(&args[i])?;
+                let file = OpenOptions::new()
+                    .create(false)
                     .write(true)
                     .read(true)
-                    .open(&args[i]);
+                    .open(&args[i])
+                    .unwrap();
+                file.set_len(filedata.len())?;
             } else {
-                let touch = OpenOptions::new()
+                OpenOptions::new()
                     .create(true)
                     .write(true)
                     .read(true)
-                    .open(&args[i]);
+                    .open(&args[i])
+                    .unwrap();
             }
         }
     }
