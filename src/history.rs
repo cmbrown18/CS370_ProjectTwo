@@ -12,11 +12,6 @@ impl History {
             commands: Vec::new(),
         }
     }
-    // TODO: Help I need some methods to work
-
-    pub fn add_to_history(Vec<String>){
-        //TODO: This is how we will add to the history struct
-    }
-
-
 }
+
+// TODO: Help I need some methods to work

@@ -3,10 +3,10 @@ use crate::history::History;
 // use std::env::{Crates Needed};
 // TODO: include crates you need from std::fs
 // use std::fs::{Crates Needed};
-use std::fs::OpenOptions;
 use std::fs::{self, File};
 use std::path::{Path, PathBuf};
 use std::process::exit;
+use std::{fs::OpenOptions, process::Command};
 use std::{io::Error, ptr::NonNull};
 
 /// Handles builtins
@@ -58,6 +58,14 @@ pub fn builtin(commands: &[String], mut history: &mut History) -> Result<bool, E
                 eprintln!("Error: Could not display history\n{}", e);
                 return Err(e);
             }
+            Ok(true)
+        }
+        "echo" => {
+            echo_builtin(commands);
+            Ok(true)
+        }
+        "vim" => {
+            vim_builtin(commands);
             Ok(true)
         }
         "exit" => {
@@ -198,5 +206,25 @@ fn pwd_builtin() {
 /// * TODO: YOU TELL ME
 fn history_builtin(args: &[String], history: &mut History) -> Result<(), Error> {
     // TODO: Write code here that will print the last n commands executed via this shell.
+    Ok(())
+}
+
+fn echo_builtin(args: &[String]) -> Result<(), Error> {
+    let mut return_string = String::new();
+    for words in 1..args.len() {
+        return_string.push_str(&args[words]);
+        return_string.push_str(" ");
+    }
+
+    println!("{}", return_string);
+
+    Ok(())
+}
+
+fn vim_builtin(args: &[String]) -> Result<(), Error> {
+    let mut vim = Command::new("vim");
+    vim.arg(&args[1]);
+    vim.spawn();
+
     Ok(())
 }
