@@ -106,7 +106,7 @@ fn file_remove_builtin(args: &[String]) -> Result<(), Error> {
             } else {
                 for i in 2..args.len() {
                     if Path::new(&args[i]).is_dir() {
-                        fs::remove_dir_all(&args[i]);
+                        fs::remove_dir_all(&args[i]).expect("Cannot remove");
                     } else if Path::new(&args[i]).exists() {
                         fs::remove_file(&args[i]);
                     } else {

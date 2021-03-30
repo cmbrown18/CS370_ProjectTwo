@@ -37,11 +37,12 @@ pub fn redirect(
         // ---- pipe in between processes ----
         "|" => handle_pipe(command, process),
         _ => {
-            // TODO
-            // This is not a redication operator but a command we want to execute, so set up a ready-to-execute
-            // Command with any command line arguments it should have and return it.
-            // Replace this error with correct code
-            return Err(Error::new(ErrorKind::Other, "Redirect not finished"));
+            let mut new_process = Command::new(command[0].to_string());
+            for i in 1..command.len() {
+                new_process.arg(&command[i].to_string());
+            }
+            new_process.spawn().expect("Command could not run");
+            Ok(Some(new_process))
         }
     }
 }
@@ -61,10 +62,6 @@ fn handle_append_redirect(
     tokens: &[String],
     process: Option<Command>,
 ) -> Result<Option<Command>, Error> {
-    //TODO
-    // Write code here to cause the standard output of this ready-to-run command
-    // to be sent to a file with the specified name. If the file already exists, its
-    // contents should be appended when this (soon-to-be process) writes to the file
     let mut pathway = String::new();
     for i in 0..tokens.len() {
         if tokens[i] == ">>" {
@@ -79,7 +76,6 @@ fn handle_append_redirect(
     let mut proc = process.unwrap();
     proc.stdout(file_name);
     Ok(Some(proc))
-    //Err(Error::new(ErrorKind::Other, "append redirect not finished"))
 }
 
 /// Redirects standard error from this ready-to-execute Command to the file with the specified name.
@@ -96,10 +92,6 @@ fn handle_stderr_redirect(
     tokens: &[String],
     process: Option<Command>,
 ) -> Result<Option<Command>, Error> {
-    //TODO
-    // Write code here to cause the standard error of this ready-to-run command
-    // to be sent to a file with the specified name. If the file already exists, its
-    // contents should be truncated before this (soon-to-be process) writes to the file.
     let mut pathway = String::new();
     for i in 0..tokens.len() {
         if tokens[i] == ">>" {
@@ -114,7 +106,6 @@ fn handle_stderr_redirect(
     let mut proc = process.unwrap();
     proc.stderr(file_name);
     Ok(Some(proc))
-    //Err(Error::new(ErrorKind::Other, "stderr redirect not finished"))
 }
 
 /// Redirects stdout and stderr from this ready-to-execute Command to the file with the specified name.
@@ -131,11 +122,6 @@ fn handle_stdout_stderr_redirect(
     tokens: &[String],
     process: Option<Command>,
 ) -> Result<Option<Command>, Error> {
-    //TODO
-    // Write code here to cause the standard output and standard error of this ready-to-run command
-    // to be sent to a file with the specified name. If the file already exists, its
-    // contents should be truncated before this (soon-to-be process) writes to the file.
-
     let mut pathway = String::new();
     for i in 0..tokens.len() {
         if tokens[i] == "&>" {
@@ -150,10 +136,6 @@ fn handle_stdout_stderr_redirect(
     let mut proc = process.unwrap();
     proc.stdout(file_name);
     Ok(Some(proc))
-    //Err(Error::new(
-    //    ErrorKind::Other,
-    //    "stdout_stderr redirect not finished",
-    //))
 }
 
 /// Redirects standard output from this ready-to-execute Command to a file with the specified name.
@@ -170,10 +152,6 @@ fn handle_stdout_redirect(
     tokens: &[String],
     process: Option<Command>,
 ) -> Result<Option<Command>, Error> {
-    //TODO
-    // Write code here to cause the standard output of this ready-to-run command
-    // to be sent to a file with the specified name. If the file already exists, its
-    // contents should be truncated before this (soon-to-be process) writes to the file.
     let mut pathway = String::new();
     for i in 0..tokens.len() {
         if tokens[i] == ">>" {
@@ -188,7 +166,6 @@ fn handle_stdout_redirect(
     let mut proc = process.unwrap();
     proc.stdout(file_name);
     Ok(Some(proc))
-    //Err(Error::new(ErrorKind::Other, "stdout redirect not finished"))
 }
 
 /// Redirects standard input to this ready-to-execute Command from the file with the specified name.
@@ -205,10 +182,6 @@ fn handle_stdin_redirect(
     tokens: &[String],
     process: Option<Command>,
 ) -> Result<Option<Command>, Error> {
-    //TODO
-    // Write code here to cause the standard input of this ready-to-run command
-    // to read from a file with the specified name
-
     let mut pathway = String::new();
     for i in 0..tokens.len() {
         if tokens[i] == ">>" {
@@ -223,8 +196,6 @@ fn handle_stdin_redirect(
     let mut proc = process.unwrap();
     proc.stdin(file_name);
     Ok(Some(proc))
-
-    //Err(Error::new(ErrorKind::Other, "stdin redirect not finished"))
 }
 
 /// Partial impementation of a pipe between two processes.
