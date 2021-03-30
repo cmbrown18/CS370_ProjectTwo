@@ -65,7 +65,7 @@ fn handle_append_redirect(
     let mut pathway = String::new();
     for i in 0..tokens.len() {
         if tokens[i] == ">>" {
-            pathway = tokens[i + 1].to_string();
+            pathway.push_str(&tokens[i + 1]);
         }
     }
     let file_name = OpenOptions::new()
@@ -94,8 +94,8 @@ fn handle_stderr_redirect(
 ) -> Result<Option<Command>, Error> {
     let mut pathway = String::new();
     for i in 0..tokens.len() {
-        if tokens[i] == ">>" {
-            pathway = tokens[i + 1].to_string();
+        if tokens[i] == "2>" {
+            pathway.push_str(&tokens[i + 1].to_string());
         }
     }
     let file_name = OpenOptions::new()
@@ -125,7 +125,7 @@ fn handle_stdout_stderr_redirect(
     let mut pathway = String::new();
     for i in 0..tokens.len() {
         if tokens[i] == "&>" {
-            pathway = tokens[i + 1].to_string();
+            pathway.push_str(&tokens[i + 1].to_string());
         }
     }
     let file_name = OpenOptions::new()
@@ -154,8 +154,8 @@ fn handle_stdout_redirect(
 ) -> Result<Option<Command>, Error> {
     let mut pathway = String::new();
     for i in 0..tokens.len() {
-        if tokens[i] == ">>" {
-            pathway = tokens[i + 1].to_string();
+        if tokens[i] == ">" {
+            pathway.push_str(&tokens[i + 1].to_string());
         }
     }
     let file_name = OpenOptions::new()
@@ -184,8 +184,8 @@ fn handle_stdin_redirect(
 ) -> Result<Option<Command>, Error> {
     let mut pathway = String::new();
     for i in 0..tokens.len() {
-        if tokens[i] == ">>" {
-            pathway = tokens[i + 1].to_string();
+        if tokens[i] == "<" {
+            pathway.push_str(&tokens[i + 1].to_string());
         }
     }
     let file_name = OpenOptions::new()
