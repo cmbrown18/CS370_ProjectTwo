@@ -60,28 +60,6 @@ pub fn builtin(commands: &[String], mut history: &mut History) -> Result<bool, E
             }
             Ok(true)
         }
-        "echo" => {
-            if let Err(e) = echo_builtin(commands) {
-                eprintln!("Error: could not echo");
-                return Err(e);
-            }
-
-            Ok(true)
-        }
-        "vim" => {
-            if let Err(e) = vim_builtin(commands) {
-                eprintln!("Error: Could not vim");
-                return Err(e);
-            }
-            Ok(true)
-        }
-        "cat" => {
-            if let Err(e) = cat_builtin(commands) {
-                eprintln!("Could not cat");
-                return Err(e);
-            }
-            Ok(true)
-        }
         "exit" => {
             exit(0);
         }
@@ -220,33 +198,5 @@ fn pwd_builtin() {
 /// * TODO: YOU TELL ME
 fn history_builtin(args: &[String], history: &mut History) -> Result<(), Error> {
     // TODO: Write code here that will print the last n commands executed via this shell.
-    Ok(())
-}
-
-fn echo_builtin(args: &[String]) -> Result<(), Error> {
-    let mut return_string = String::new();
-    for words in 1..args.len() {
-        return_string.push_str(&args[words]);
-        return_string.push_str(" ")
-    }
-
-    Command::new("echo").arg(return_string).spawn();
-
-    Ok(())
-}
-
-fn vim_builtin(args: &[String]) -> Result<(), Error> {
-    let mut vim = Command::new("vim");
-    vim.arg(&args[1]);
-    vim.spawn();
-
-    Ok(())
-}
-
-fn cat_builtin(args: &[String]) -> Result<(), Error> {
-    let mut cat = Command::new("cat");
-    cat.arg(&args[1]);
-    cat.spawn();
-
     Ok(())
 }
