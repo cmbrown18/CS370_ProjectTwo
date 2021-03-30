@@ -10,7 +10,6 @@ use std::process::Command;
 ///
 /// A vector of strings corresponding to the data entered into the command line
 pub fn prompt_and_read() -> Option<Vec<String>> {
-
     print!("({}) $ ", id());
     stdout().flush().expect("Error flushing stdout");
     let mut buffer = String::new();
@@ -34,7 +33,6 @@ pub fn prompt_and_read() -> Option<Vec<String>> {
 /// * `process` - A `Command` to be executed
 //fn execute(process: &mut Command, sender: Sender<i32>) {
 pub fn execute(process: &mut Command) -> Result<(), Error> {
-
     //  TODO:  Write code here to fork off a child process and wait for the child process to terminate.  When the
     //  child finally does terminate print appropriate results along with a message like:
     //
@@ -43,8 +41,6 @@ pub fn execute(process: &mut Command) -> Result<(), Error> {
     //  Where 123 here is the process id of the child and 0 is the exit status of that process.
 
     Ok(())
-
-
 }
 /// Recursively parses the line of user input
 ///
@@ -72,7 +68,6 @@ pub fn parse_line(tokens: &[String], process: Option<Command>) -> Result<Option<
         redirector = &tokens[0];
         tokens = &tokens[1..];
     }
-
 
     // If there is no process to redirect, no partial output to redirect,
     // and the first character is a redirector, then an error has occurred
@@ -107,10 +102,12 @@ pub fn parse_line(tokens: &[String], process: Option<Command>) -> Result<Option<
 /// True if the specified token is "special" (i.e., is an operator like >, >>, |, <, etc); false
 /// otherwise.
 fn is_special(token: &str) -> bool {
-    if token.len() == 1 && 
-       ( token.find("<") == Some(0) || token.find(">") == Some(0) || 
-       token.find("!") == Some(0) || token.find("|") == Some(0) ) || 
-       token.len() == 2 && token.rfind(">") == Some(1)
+    if token.len() == 1
+        && (token.find("<") == Some(0)
+            || token.find(">") == Some(0)
+            || token.find("!") == Some(0)
+            || token.find("|") == Some(0))
+        || token.len() == 2 && token.rfind(">") == Some(1)
     {
         return true;
     }

@@ -1,6 +1,7 @@
-use std::fs::OpenOptions;
 use std::io::{Error, ErrorKind};
 use std::process::{Command, Stdio};
+use std::{fs::File, io::Write};
+use std::{fs::OpenOptions, io::Read};
 
 /// Handles redirection
 ///
@@ -63,8 +64,22 @@ fn handle_append_redirect(
     //TODO
     // Write code here to cause the standard output of this ready-to-run command
     // to be sent to a file with the specified name. If the file already exists, its
-    // contents should be appended when this (soon-to-be process) writes to the file.
-    Err(Error::new(ErrorKind::Other, "append redirect not finished"))
+    // contents should be appended when this (soon-to-be process) writes to the file
+    let mut pathway = String::new();
+    for i in 0..tokens.len() {
+        if tokens[i] == ">>" {
+            pathway = tokens[i + 1].to_string();
+        }
+    }
+    let file_name = OpenOptions::new()
+        .create(true)
+        .append(true)
+        .open(pathway)
+        .expect("Failed to open");
+    let mut proc = process.unwrap();
+    proc.stdout(file_name);
+    Ok(Some(proc))
+    //Err(Error::new(ErrorKind::Other, "append redirect not finished"))
 }
 
 /// Redirects standard error from this ready-to-execute Command to the file with the specified name.
@@ -85,6 +100,7 @@ fn handle_stderr_redirect(
     // Write code here to cause the standard error of this ready-to-run command
     // to be sent to a file with the specified name. If the file already exists, its
     // contents should be truncated before this (soon-to-be process) writes to the file.
+
     Err(Error::new(ErrorKind::Other, "stderr redirect not finished"))
 }
 
@@ -106,6 +122,7 @@ fn handle_stdout_stderr_redirect(
     // Write code here to cause the standard output and standard error of this ready-to-run command
     // to be sent to a file with the specified name. If the file already exists, its
     // contents should be truncated before this (soon-to-be process) writes to the file.
+
     Err(Error::new(
         ErrorKind::Other,
         "stdout_stderr redirect not finished",
@@ -151,6 +168,7 @@ fn handle_stdin_redirect(
     //TODO
     // Write code here to cause the standard input of this ready-to-run command
     // to read from a file with the specified name
+
     Err(Error::new(ErrorKind::Other, "stdin redirect not finished"))
 }
 

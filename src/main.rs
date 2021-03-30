@@ -9,8 +9,6 @@ use crate::builtin::builtin;
 use crate::history::History;
 use crate::utils::{execute, parse_line, prompt_and_read};
 use ctrlc::set_handler;
-//use nix::sys::signal::{kill, SIGTERM};
-//use nix::unistd::Pid;
 use std::cell::RefCell;
 
 ///
