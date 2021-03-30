@@ -20,6 +20,7 @@ use std::{io::Error, ptr::NonNull};
 ///
 /// True if the command was a builtin, else false.
 pub fn builtin(commands: &[String], mut history: &mut History) -> Result<bool, Error> {
+    history.add(&commands);
     match &commands.first().unwrap_or(&String::new())[..] {
         "ls" => {
             if let Err(e) = list_files_builtin(commands) {
@@ -198,5 +199,6 @@ fn pwd_builtin() {
 /// * TODO: YOU TELL ME
 fn history_builtin(args: &[String], history: &mut History) -> Result<(), Error> {
     // TODO: Write code here that will print the last n commands executed via this shell.
+    history.print_commands();
     Ok(())
 }

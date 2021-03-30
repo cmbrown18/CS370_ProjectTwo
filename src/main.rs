@@ -45,11 +45,11 @@ use std::cell::RefCell;
 fn main() {
     // TODO:  Define a signal handler function below as needed
 
+    let mut history = History::new();
+
     loop {
         let tokens = prompt_and_read().unwrap_or(Vec::new()); // entire line
                                                               // TODO: Somewhere in this section of code remember commands executed
-
-        let mut history = History::new();
 
         // Check if user want to run a builtin or not
         if let Ok(false) = builtin(&tokens, &mut history) {

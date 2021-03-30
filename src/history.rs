@@ -6,10 +6,29 @@
 pub struct History {
     commands: Vec<Vec<String>>,
 }
+
 impl History {
     pub const fn new() -> Self {
         History {
             commands: Vec::new(),
+        }
+    }
+
+    pub fn add(&mut self, slice: &[String]){
+        let mut vector: Vec<String> = Vec::new();
+        for string in slice{
+            let temp = String::from(string);
+            vector.push(temp);
+        }
+        &self.commands.push(vector);
+    }
+
+    pub fn print_commands(&self){
+        for outer in self.commands.iter(){
+            for inner in outer.iter(){
+                print!("\"{}\" ", inner);
+            }
+            print!("\n");
         }
     }
 }
