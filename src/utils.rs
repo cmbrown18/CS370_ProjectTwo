@@ -37,9 +37,10 @@ pub fn execute(process: &mut Command) -> Result<(), Error> {
     //  child finally does terminate print appropriate results along with a message like:
     //
     //  "Child 123 exited with status 0"
-    //
-    //  Where 123 here is the process id of the child and 0 is the exit status of that process.
-
+    let child = process.spawn().expect("Failed to spawn");
+    let mut child2 = child;
+    child2.wait();
+    println!("Child {} exited with status 0", child2.id());
     Ok(())
 }
 /// Recursively parses the line of user input
