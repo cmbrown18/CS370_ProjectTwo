@@ -119,10 +119,18 @@ fn handle_stdout_stderr_redirect(
         .create(true)
         .write(true)
         .truncate(true)
-        .open(pathway)
+        .open(&pathway)
         .expect("Failed to open");
+    let file_two = OpenOptions::new()
+        .create(true)
+        .write(true)
+        .truncate(true)
+        .open(&pathway)
+        .expect("Failed to open");
+
     let mut proc = process.expect("Failed to unwrap");
     proc.stdout(file_name);
+    proc.stderr(file_two);
     Ok(Some(proc))
 }
 
@@ -193,11 +201,23 @@ fn handle_stdin_redirect(
 fn handle_pipe(commands: &[String], process: Option<Command>) -> Result<Option<Command>, Error> {
     // TODO
     // We do not see a RHS process there is nothing to do
-
+    if commands.is_empty() {
+        println!("Need something after the pipe to run a pipe command");
+    }
     //TODO
     // Write code here to handle a pipe between processes -- a unidirectional data stream
     // that can be used for interprocess communication.
+    let stdout = process.unwrap().spawn().unwrap().stdout;
+    let mut arguments = vec![];
+
+    for i in 1..commands.len() {
+        arguments.push(commands[i].to_string());
+    }
+
+    let mut new_process = Command::new(&commands[0]);
+    new_process.args(arguments);
+    new_process.stdin(stdout.unwrap());
+    Ok(Some(new_process))
 
     // Write code here to run and connect the left hand side process to a new ready-to-execute Command
-    Err(Error::new(ErrorKind::Other, "pipe redirect not finished"))
 }

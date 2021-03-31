@@ -33,13 +33,9 @@ pub fn prompt_and_read() -> Option<Vec<String>> {
 /// * `process` - A `Command` to be executed
 //fn execute(process: &mut Command, sender: Sender<i32>) {
 pub fn execute(process: &mut Command) -> Result<(), Error> {
-    //  TODO:  Write code here to fork off a child process and wait for the child process to terminate.  When the
-    //  child finally does terminate print appropriate results along with a message like:
-    //
-    //  "Child 123 exited with status 0"
     let child = process.spawn().expect("Failed to spawn");
     let mut child2 = child;
-    child2.wait();
+    child2.wait().expect("Failed to run command");
     println!("Child {} exited with status 0", child2.id());
     Ok(())
 }
