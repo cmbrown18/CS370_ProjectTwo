@@ -22,7 +22,6 @@ pub fn redirect(
     match redirector {
         // ---- Append redirection ----
         ">>" => handle_append_redirect(command, process),
-
         // ---- stderr redirection ----
         "2>" => handle_stderr_redirect(command, process),
 
@@ -41,7 +40,7 @@ pub fn redirect(
             for i in 1..command.len() {
                 new_process.arg(&command[i].to_string());
             }
-            new_process.spawn().expect("Command could not run");
+            new_process.spawn().expect("Failed to run");
             Ok(Some(new_process))
         }
     }
@@ -63,18 +62,14 @@ fn handle_append_redirect(
     process: Option<Command>,
 ) -> Result<Option<Command>, Error> {
     let mut pathway = String::new();
-    for i in 0..tokens.len() {
-        if tokens[i] == ">>" {
-            pathway.push_str(&tokens[i + 1]);
-        }
-    }
+    pathway.push_str(&tokens[0]);
     let file_name = OpenOptions::new()
         .create(true)
         .append(true)
         .open(pathway)
         .expect("Failed to open");
     let mut proc = process.unwrap();
-    proc.stdout(file_name);
+    proc.stdout(file_name).spawn().expect("Failed to spawn");
     Ok(Some(proc))
 }
 
@@ -93,18 +88,15 @@ fn handle_stderr_redirect(
     process: Option<Command>,
 ) -> Result<Option<Command>, Error> {
     let mut pathway = String::new();
-    for i in 0..tokens.len() {
-        if tokens[i] == "2>" {
-            pathway.push_str(&tokens[i + 1].to_string());
-        }
-    }
+    pathway.push_str(&tokens[0].to_string());
     let file_name = OpenOptions::new()
         .create(true)
         .truncate(true)
+        .write(true)
         .open(pathway)
         .expect("Failed to open");
-    let mut proc = process.unwrap();
-    proc.stderr(file_name);
+    let mut proc = process.expect("Failed to unwrap");
+    proc.stderr(file_name).spawn().expect("Failed to run");
     Ok(Some(proc))
 }
 
@@ -123,18 +115,15 @@ fn handle_stdout_stderr_redirect(
     process: Option<Command>,
 ) -> Result<Option<Command>, Error> {
     let mut pathway = String::new();
-    for i in 0..tokens.len() {
-        if tokens[i] == "&>" {
-            pathway.push_str(&tokens[i + 1].to_string());
-        }
-    }
+    pathway.push_str(&tokens[0].to_string());
     let file_name = OpenOptions::new()
         .create(true)
+        .write(true)
         .truncate(true)
         .open(pathway)
         .expect("Failed to open");
-    let mut proc = process.unwrap();
-    proc.stdout(file_name);
+    let mut proc = process.expect("Failed to unwrap");
+    proc.stdout(file_name).spawn().expect("Failed to execute");
     Ok(Some(proc))
 }
 
@@ -153,18 +142,17 @@ fn handle_stdout_redirect(
     process: Option<Command>,
 ) -> Result<Option<Command>, Error> {
     let mut pathway = String::new();
-    for i in 0..tokens.len() {
-        if tokens[i] == ">" {
-            pathway.push_str(&tokens[i + 1].to_string());
-        }
-    }
+    pathway.push_str(&tokens[0].to_string());
+    println!("{}", pathway.to_string());
     let file_name = OpenOptions::new()
         .create(true)
         .truncate(true)
+        .write(true)
         .open(pathway)
         .expect("Failed to open");
-    let mut proc = process.unwrap();
-    proc.stdout(file_name);
+
+    let mut proc = process.expect("Failed to unwrap");
+    proc.stdout(file_name).spawn().expect("Failed to execute");
     Ok(Some(proc))
 }
 
@@ -183,18 +171,13 @@ fn handle_stdin_redirect(
     process: Option<Command>,
 ) -> Result<Option<Command>, Error> {
     let mut pathway = String::new();
-    for i in 0..tokens.len() {
-        if tokens[i] == "<" {
-            pathway.push_str(&tokens[i + 1].to_string());
-        }
-    }
+    pathway.push_str(&tokens[0].to_string());
     let file_name = OpenOptions::new()
-        .create(true)
         .read(true)
         .open(pathway)
         .expect("Failed to open");
-    let mut proc = process.unwrap();
-    proc.stdin(file_name);
+    let mut proc = process.expect("failed to unwrap");
+    proc.stdin(file_name).spawn().expect("faild to execute");
     Ok(Some(proc))
 }
 
