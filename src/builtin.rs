@@ -9,6 +9,7 @@ use std::process::exit;
 use std::{fs::OpenOptions, process::Command};
 use std::{io::Error, ptr::NonNull};
 use std::ffi::OsString;
+use std::env::set_current_dir;
 
 /// Handles builtins
 ///
@@ -177,7 +178,7 @@ fn change_dir_builtin(args: &[String]) -> Result<(), Error> {
     if args.len() == 1 {
         let key = "HOME";
         match std::env::var_os(key){
-            Some(val) => println!("{}: {:?}", key, val),
+            Some(val) => set_current_dir(val),
             None => println!("{} is not defined in the environment", key)
         }
     }else {
