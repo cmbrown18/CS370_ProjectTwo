@@ -1,4 +1,3 @@
-/// TODO: HELP all files, classes, functions, method need commenting
 /// Agora is using Rust, version 1.45.0
 pub mod builtin;
 pub mod history;
@@ -40,16 +39,11 @@ use std::cell::RefCell;
 /// Keep in mind that this program was written to be easily understood/modified for educational
 /// purposes.  The author makes no claim that this is the "best" way to solve this problem.
 
-//TODO: create Global variable if needed
-
 fn main() {
-    // TODO:  Define a signal handler function below as needed
-
     let mut history = History::new();
 
     loop {
-        let tokens = prompt_and_read().unwrap_or(Vec::new()); // entire line
-                                                              // TODO: Somewhere in this section of code remember commands executed
+        let tokens = prompt_and_read().unwrap_or(Vec::new());
 
         // Check if user want to run a builtin or not
         if let Ok(false) = builtin(&tokens, &mut history) {
@@ -66,6 +60,7 @@ fn main() {
                 // * Pipe encountered an error and returned early
                 // * An error occurred parsing the line
                 //      Specifically, writing to stdout/stderr in parse_line
+                set_handler(handler).expect("Failed to set signal handler");
             }
         } else {
             // Reasons this will execute:
@@ -73,4 +68,9 @@ fn main() {
             // * A builtin function returned true
         }
     }
+}
+
+fn handler() {
+    println!("exit to quit out of the shell");
+    main();
 }
