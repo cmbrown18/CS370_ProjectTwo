@@ -207,9 +207,13 @@ fn handle_pipe(commands: &[String], process: Option<Command>) -> Result<Option<C
     //TODO
     // Write code here to handle a pipe between processes -- a unidirectional data stream
     // that can be used for interprocess communication.
-    let stdout = process.unwrap().spawn().unwrap().stdout;
+    let stdout = process
+        .unwrap()
+        .stdout(Stdio::piped())
+        .spawn()
+        .expect("failed to spawn")
+        .stdout;
     let mut arguments = vec![];
-
     for i in 1..commands.len() {
         arguments.push(commands[i].to_string());
     }
