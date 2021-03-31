@@ -40,7 +40,6 @@ pub fn redirect(
             for i in 1..command.len() {
                 new_process.arg(&command[i].to_string());
             }
-            new_process.spawn().expect("Failed to run");
             Ok(Some(new_process))
         }
     }
@@ -69,7 +68,7 @@ fn handle_append_redirect(
         .open(pathway)
         .expect("Failed to open");
     let mut proc = process.unwrap();
-    proc.stdout(file_name).spawn().expect("Failed to spawn");
+    proc.stdout(file_name);
     Ok(Some(proc))
 }
 
@@ -96,7 +95,7 @@ fn handle_stderr_redirect(
         .open(pathway)
         .expect("Failed to open");
     let mut proc = process.expect("Failed to unwrap");
-    proc.stderr(file_name).spawn().expect("Failed to run");
+    proc.stderr(file_name);
     Ok(Some(proc))
 }
 
@@ -123,7 +122,7 @@ fn handle_stdout_stderr_redirect(
         .open(pathway)
         .expect("Failed to open");
     let mut proc = process.expect("Failed to unwrap");
-    proc.stdout(file_name).spawn().expect("Failed to execute");
+    proc.stdout(file_name);
     Ok(Some(proc))
 }
 
@@ -143,7 +142,6 @@ fn handle_stdout_redirect(
 ) -> Result<Option<Command>, Error> {
     let mut pathway = String::new();
     pathway.push_str(&tokens[0].to_string());
-    println!("{}", pathway.to_string());
     let file_name = OpenOptions::new()
         .create(true)
         .truncate(true)
@@ -152,7 +150,7 @@ fn handle_stdout_redirect(
         .expect("Failed to open");
 
     let mut proc = process.expect("Failed to unwrap");
-    proc.stdout(file_name).spawn().expect("Failed to execute");
+    proc.stdout(file_name);
     Ok(Some(proc))
 }
 
@@ -177,7 +175,7 @@ fn handle_stdin_redirect(
         .open(pathway)
         .expect("Failed to open");
     let mut proc = process.expect("failed to unwrap");
-    proc.stdin(file_name).spawn().expect("faild to execute");
+    proc.stdin(file_name);
     Ok(Some(proc))
 }
 
