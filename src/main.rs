@@ -71,5 +71,5 @@ fn main() {
 
 ///Handler function for control C
 fn handler() {
-    println!("exit to quit out of the shell");
+
 }
