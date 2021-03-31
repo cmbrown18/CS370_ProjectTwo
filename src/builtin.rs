@@ -176,8 +176,9 @@ fn touch_builtin(args: &[String]) -> Result<(), Error> {
 /// * `args` - A vector of strings corresponding to the command and its arguments.
 fn change_dir_builtin(args: &[String]) -> Result<(), Error> {
     if args.len() == 1 {
-        let key = "/home";
-        std::env::set_current_dir(&key).expect("Failed to change directories");
+        let key = "HOME";
+        let val = std::env::var_os(key);
+        std::env::set_current_dir(val.unwrap()).expect("Failed to change directories");
     } else {
         if Path::new(&args[1]).is_dir() {
             std::env::set_current_dir(&args[1]).expect("Failed to change directories");
