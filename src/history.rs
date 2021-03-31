@@ -19,9 +19,9 @@ impl History {
     /// # Arguments
     ///
     /// * `slice` - String slice containing a single command that was entered into our shell
-    pub fn add(&mut self, slice: &[String]){
+    pub fn add(&mut self, slice: &[String]) {
         let mut vector: Vec<String> = Vec::new();
-        for string in slice{
+        for string in slice {
             let temp = String::from(string);
             vector.push(temp);
         }
@@ -32,9 +32,12 @@ impl History {
     pub fn print_commands(&mut self, num_slice: &String) {
         let temp = String::from(num_slice);
         if temp != "none" {
-            let mut count = temp.trim().parse::<usize>().expect("history.print_commands: Failed to parse to i8");
+            let count = temp
+                .trim()
+                .parse::<usize>()
+                .expect("history.print_commands: Failed to parse to i8");
             let mut i = 0;
-            for vector in self.commands.iter(){
+            for vector in self.commands.iter() {
                 if i >= count {
                     let mut string = vector.join(" ");
                     string = "\"".to_owned() + &string + "\"";

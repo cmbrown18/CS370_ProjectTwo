@@ -3,13 +3,11 @@ use crate::history::History;
 // use std::env::{Crates Needed};
 // TODO: include crates you need from std::fs
 // use std::fs::{Crates Needed};
-use std::env::set_current_dir;
-use std::ffi::OsString;
-use std::fs::{self, File};
-use std::path::{Path, PathBuf};
+use std::fs::OpenOptions;
+use std::fs::{self};
+use std::io::Error;
+use std::path::Path;
 use std::process::exit;
-use std::{fs::OpenOptions, process::Command};
-use std::{io::Error, ptr::NonNull};
 
 /// Handles builtins
 ///
@@ -111,7 +109,7 @@ fn file_remove_builtin(args: &[String]) -> Result<(), Error> {
                     if Path::new(&args[i]).is_dir() {
                         fs::remove_dir_all(&args[i]).expect("Cannot remove");
                     } else if Path::new(&args[i]).exists() {
-                        fs::remove_file(&args[i]);
+                        fs::remove_file(&args[i]).expect("Failed to remove");
                     } else {
                         println!("rm: cannot remove '{}': No such file or directory", args[2]);
                     }
@@ -126,7 +124,7 @@ fn file_remove_builtin(args: &[String]) -> Result<(), Error> {
                         &args[i]
                     );
                 } else if path.exists() {
-                    std::fs::remove_file(&args[i]);
+                    std::fs::remove_file(&args[i]).expect("Failed to remove");
                 } else {
                     println!("rm: cannot remove '{}': No such file or directory", args[1]);
                 }
@@ -205,7 +203,7 @@ fn history_builtin(args: &[String], history: &mut History) -> Result<(), Error> 
     // TODO: Write code here that will print the last n commands executed via this shell.
     if args.len() == 1 {
         history.print_commands(&String::from("none"));
-    }else {
+    } else {
         history.print_commands(&args[1]);
     }
     Ok(())

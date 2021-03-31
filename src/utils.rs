@@ -1,6 +1,6 @@
 use crate::parser::parse;
 use crate::redirect::redirect;
-use std::io::{stderr, stdin, stdout, Error, Write};
+use std::io::{stdin, stdout, Error, Write};
 use std::process::id;
 use std::process::Command;
 

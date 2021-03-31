@@ -1,7 +1,6 @@
-use std::io::{Error, ErrorKind};
+use std::fs::OpenOptions;
+use std::io::Error;
 use std::process::{Command, Stdio};
-use std::{fs::File, io::Write};
-use std::{fs::OpenOptions, io::Read};
 
 /// Handles redirection
 ///
