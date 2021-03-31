@@ -41,6 +41,7 @@ use std::cell::RefCell;
 
 fn main() {
     let mut history = History::new();
+    set_handler(handler).expect("Failed to set signal handler");
 
     loop {
         let tokens = prompt_and_read().unwrap_or(Vec::new());
@@ -60,7 +61,6 @@ fn main() {
                 // * Pipe encountered an error and returned early
                 // * An error occurred parsing the line
                 //      Specifically, writing to stdout/stderr in parse_line
-                set_handler(handler).expect("Failed to set signal handler");
             }
         } else {
             // Reasons this will execute:
@@ -72,5 +72,4 @@ fn main() {
 
 fn handler() {
     println!("exit to quit out of the shell");
-    main();
 }
