@@ -8,6 +8,7 @@ use std::path::{Path, PathBuf};
 use std::process::exit;
 use std::{fs::OpenOptions, process::Command};
 use std::{io::Error, ptr::NonNull};
+use std::ffi::OsString;
 
 /// Handles builtins
 ///
@@ -173,14 +174,18 @@ fn touch_builtin(args: &[String]) -> Result<(), Error> {
 ///
 /// * `args` - A vector of strings corresponding to the command and its arguments.
 fn change_dir_builtin(args: &[String]) -> Result<(), Error> {
-    // TODO: Write code here that will change to a specified directory.
-
-    //which arg would we pass in??
-    //maybe call our pwd to test it and also test this function as well -- two birds one stone
-    if Path::new(&args[1]).is_dir() {
-        std::env::set_current_dir(&args[1]);
-    } else {
-        println!("cd: {}: no such file or directory", &args[1]);
+    if args.len() == 1 {
+        let key = "HOME";
+        match std::env::var_os(key){
+            Some(val) => println!("{}: {:?}", key, val),
+            None => println!("{} is not defined in the environment", key)
+        }
+    }else {
+        if Path::new(&args[1]).is_dir() {
+            std::env::set_current_dir(&args[1]);
+        } else {
+            println!("cd: {}: no such file or directory", &args[1]);
+        }
     }
     Ok(())
 }
