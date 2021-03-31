@@ -3,13 +3,13 @@ use crate::history::History;
 // use std::env::{Crates Needed};
 // TODO: include crates you need from std::fs
 // use std::fs::{Crates Needed};
+use std::env::set_current_dir;
+use std::ffi::OsString;
 use std::fs::{self, File};
 use std::path::{Path, PathBuf};
 use std::process::exit;
 use std::{fs::OpenOptions, process::Command};
 use std::{io::Error, ptr::NonNull};
-use std::ffi::OsString;
-use std::env::set_current_dir;
 
 /// Handles builtins
 ///
@@ -176,14 +176,11 @@ fn touch_builtin(args: &[String]) -> Result<(), Error> {
 /// * `args` - A vector of strings corresponding to the command and its arguments.
 fn change_dir_builtin(args: &[String]) -> Result<(), Error> {
     if args.len() == 1 {
-        let key = "HOME";
-        match std::env::var_os(key){
-            Some(val) => set_current_dir(val),
-            None => println!("{} is not defined in the environment", key)
-        }
-    }else {
+        let key = "/home";
+        std::env::set_current_dir(&key).expect("Failed to change directories");
+    } else {
         if Path::new(&args[1]).is_dir() {
-            std::env::set_current_dir(&args[1]);
+            std::env::set_current_dir(&args[1]).expect("Failed to change directories");
         } else {
             println!("cd: {}: no such file or directory", &args[1]);
         }
