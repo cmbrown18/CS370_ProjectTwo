@@ -31,7 +31,6 @@ pub fn prompt_and_read() -> Option<Vec<String>> {
 /// # Arguments
 ///
 /// * `process` - A `Command` to be executed
-//fn execute(process: &mut Command, sender: Sender<i32>) {
 pub fn execute(process: &mut Command) -> Result<(), Error> {
     let child = process.spawn().expect("Failed to spawn");
     let mut child2 = child;

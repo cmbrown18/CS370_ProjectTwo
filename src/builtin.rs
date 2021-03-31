@@ -1,8 +1,4 @@
 use crate::history::History;
-// TODO: include crates you need from std::env
-// use std::env::{Crates Needed};
-// TODO: include crates you need from std::fs
-// use std::fs::{Crates Needed};
 use std::fs::OpenOptions;
 use std::fs::{self};
 use std::io::Error;
@@ -14,7 +10,7 @@ use std::process::exit;
 /// # Arguments
 ///
 /// * `commands` - A string slice representing a command and its arguments
-/// * TODO: YOU TELL ME
+/// * `history` - History struct that keeps track of all commands entered in shell
 ///
 /// # Return value
 ///
@@ -74,8 +70,6 @@ pub fn builtin(commands: &[String], mut history: &mut History) -> Result<bool, E
 ///
 /// * `args` - A vector of strings corresponding to the command and its arguments.
 fn list_files_builtin(args: &[String]) -> Result<(), Error> {
-    // TODO: Write code here that will list the content of the specified directory (or if no directory was specified,
-    // the current directory).
 
     //if the command is literally 'ls'
     if args.len() == 1 {
@@ -98,8 +92,6 @@ fn list_files_builtin(args: &[String]) -> Result<(), Error> {
 ///
 /// * `args` - A vector of strings corresponding to the command and its arguments.
 fn file_remove_builtin(args: &[String]) -> Result<(), Error> {
-    // TODO: Write code here that will remove the specified list of files.  If no file list is specified, print a
-    // usage message.
     if !args.is_empty() {
         if args[1] == "-r" {
             if args.len() != 3 {
@@ -142,7 +134,6 @@ fn file_remove_builtin(args: &[String]) -> Result<(), Error> {
 ///
 /// * `args` - A vector of strings corresponding to the command and its arguments.
 fn touch_builtin(args: &[String]) -> Result<(), Error> {
-    // TODO: Write code here that will create a file or update a timestamp of a file.
     if !args.is_empty() {
         for i in 1..args.len() {
             if Path::new(&args[i]).exists() {
@@ -198,9 +189,8 @@ fn pwd_builtin() {
 /// # Arguments
 ///
 /// * `args` - A vector of strings corresponding to the command and its arguments.
-/// * TODO: YOU TELL ME
+/// * `history` - A history struct to use for our shell
 fn history_builtin(args: &[String], history: &mut History) -> Result<(), Error> {
-    // TODO: Write code here that will print the last n commands executed via this shell.
     if args.len() == 1 {
         history.print_commands(&String::from("none"));
     } else {

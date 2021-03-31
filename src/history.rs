@@ -29,6 +29,9 @@ impl History {
     }
 
     ///Method to print out vector of commands
+    ///
+    /// # Arguments
+    /// * `num_slice` - String slice containing number of history commands to display
     pub fn print_commands(&mut self, num_slice: &String) {
         let temp = String::from(num_slice);
         if temp != "none" {
@@ -54,5 +57,3 @@ impl History {
         }
     }
 }
-
-// TODO: Help I need some methods to work
