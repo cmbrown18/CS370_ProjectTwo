@@ -203,6 +203,10 @@ fn pwd_builtin() {
 /// * TODO: YOU TELL ME
 fn history_builtin(args: &[String], history: &mut History) -> Result<(), Error> {
     // TODO: Write code here that will print the last n commands executed via this shell.
-    history.print_commands();
+    if args.len() == 1 {
+        history.print_commands(&String::from("none"));
+    }else {
+        history.print_commands(&args[1]);
+    }
     Ok(())
 }
