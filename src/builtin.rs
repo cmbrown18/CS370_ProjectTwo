@@ -79,8 +79,15 @@ fn list_files_builtin(args: &[String]) -> Result<(), Error> {
         }
     } else {
         //if it is 2
-        for entry in fs::read_dir(&args[1])? {
-            println!("\"{}\"", entry.unwrap().path().display());
+        let mut count = 0;
+        for arg in args.iter() {
+            if count > 0 {
+                println!("\n{}:", arg);
+                for entry in fs::read_dir(&arg)? {
+                    println!("\"{}\"", entry.unwrap().path().display());
+                }
+            }
+            count += 1;
         }
     }
     Ok(())
